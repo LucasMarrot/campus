@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import fr.cnam.campus.ui.theme.CampusTheme
+import androidx.compose.material3.Card
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -124,3 +125,43 @@ val sampleEvents = listOf(
         capacity = 15
     )
 )
+
+@Composable
+fun EventCard(
+    event: Event,
+    onBook: () -> Unit,
+    onClick: () -> Unit = {},
+    modifier: Modifier = Modifier
+) {
+    Card(
+        onClick = onClick,
+        modifier = modifier.fillMaxWidth()
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            EventHeader(
+                title = event.title,
+                category = event.category,
+                location = event.location
+            )
+
+            Text(
+                text = if (event.capacity > 0) "${event.capacity} places disponibles" else "Complet"
+            )
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End
+            ) {
+                Button(
+                    onClick = onBook,
+                    enabled = event.capacity > 0
+                ) {
+                    Text("Réserver")
+                }
+            }
+        }
+    }
+}
