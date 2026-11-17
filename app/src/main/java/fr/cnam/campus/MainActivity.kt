@@ -26,6 +26,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TopAppBar
 import androidx.compose.foundation.layout.PaddingValues
+import android.util.Log
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,11 +34,30 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             CampusTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    ActionLine(modifier = Modifier.padding(innerPadding))
-                }
+                EventListScreen(
+                    events = sampleEvents,
+                    onEventClick = { event ->
+                        Log.d("Campus", "Clic sur l'événement : ${event.title}")
+                    },
+                    onBookClick = { event ->
+                        Log.d("Campus", "Réservation effectuée pour : ${event.title}")
+                    },
+                    modifier = Modifier.fillMaxSize()
+                )
             }
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun EventListScreenPreview() {
+    CampusTheme {
+        EventListScreen(
+            events = sampleEvents,
+            onEventClick = {},
+            onBookClick = {}
+        )
     }
 }
 
