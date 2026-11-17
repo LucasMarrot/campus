@@ -29,6 +29,12 @@ import androidx.compose.foundation.layout.PaddingValues
 import android.util.Log
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.FilterChip
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.foundation.layout.height
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -126,7 +132,8 @@ data class Event(
     val title: String,
     val category: String,
     val location: String?,
-    val capacity: Int
+    val capacity: Int,
+    val description: String = ""
 )
 
 val sampleEvents = listOf(
@@ -135,35 +142,40 @@ val sampleEvents = listOf(
         title = "Atelier Kotlin & Coroutines",
         category = "Développement",
         location = "Amphi A",
-        capacity = 25
+        capacity = 25,
+        description = "Venez découvrir la puissance des Coroutines en Kotlin pour gérer l'asynchronisme dans vos applications Android modernes.\n\nAu programme : Dispatchers, Flow, Structured Concurrency, gestion des annulations et des erreurs. Des exercices pratiques sur machines virtuelles et smartphones seront proposés tout au long de la session."
     ),
     Event(
         id = "2",
         title = "Découverte de Jetpack Compose",
         category = "Développement",
         location = "Salle 204",
-        capacity = 0 // Événement complet
+        capacity = 0, // Complet
+        description = "Plongez dans le futur du développement d'interfaces Android avec Jetpack Compose. Apprenez à concevoir des écrans déclaratifs, dynamiques et performants sans écrire une seule ligne de XML."
     ),
     Event(
         id = "3",
         title = "Conférence Sécurité Android",
         category = "Sécurité",
-        location = null, // Sans lieu précisé
-        capacity = 50
+        location = null,
+        capacity = 50,
+        description = "Tour d'horizon des bonnes pratiques de sécurité : stockage sécurisé avec EncryptedSharedPreferences, authentification biométrique et Credential Manager, et sécurisation des communications réseau."
     ),
     Event(
         id = "4",
         title = "Hackathon Campus 2026",
         category = "Innovation",
         location = "Hall principal",
-        capacity = 100
+        capacity = 100,
+        description = "48 heures non-stop pour concevoir, prototyper et présenter un projet innovant à impact social ou environnemental en équipe. Nombreux lots à gagner et mentors d'entreprises partenaires présents !"
     ),
     Event(
         id = "5",
         title = "Meetup Design System & Accessibilité",
         category = "Design",
         location = "Espace Coworking",
-        capacity = 15
+        capacity = 15,
+        description = "Comment concevoir des composants Material 3 accessibles à tous les utilisateurs (talkback, contraste, taille de police dynamique) tout en respectant une identité visuelle forte."
     )
 )
 
@@ -276,6 +288,65 @@ fun EventListScreen(
                 )
             }
 
+        }
+    }
+}
+
+@Composable
+fun EventDetailScreen(
+    event: Event,
+    onBookClick: () -> Unit = {},
+    modifier: Modifier = Modifier
+) {
+    Scaffold(
+        bottomBar = {
+            Button(
+                onClick = onBookClick,
+                enabled = event.capacity > 0,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+            ) {
+                Text(if (event.capacity > 0) "Réserver" else "Complet")
+            }
+        },
+        modifier = modifier
+    ) { innerPadding ->
+        Column(
+            modifier = Modifier
+                .padding(innerPadding)
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.ic_launcher_background),
+                contentDescription = "Illustration de l'événement",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(200.dp),
+                contentScale = ContentScale.Crop
+            )
+
+            Column(
+                modifier = Modifier.padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                EventHeader(
+                    title = event.title,
+                    category = event.category,
+                    location = event.location
+                )
+
+                Text(
+                    text = "Description",
+                    style = MaterialTheme.typography.titleMedium
+                )
+
+                Text(
+                    text = event.description,
+                    style = MaterialTheme.typography.bodyLarge
+                )
+            }
         }
     }
 }
