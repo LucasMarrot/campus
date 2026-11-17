@@ -78,3 +78,49 @@ fun ActionLine(modifier: Modifier = Modifier) {
         }
     }
 }
+
+data class Event(
+    val id: String,
+    val title: String,
+    val category: String,
+    val location: String?,
+    val capacity: Int
+)
+
+val sampleEvents = listOf(
+    Event(
+        id = "1",
+        title = "Atelier Kotlin & Coroutines",
+        category = "Développement",
+        location = "Amphi A",
+        capacity = 25
+    ),
+    Event(
+        id = "2",
+        title = "Découverte de Jetpack Compose",
+        category = "Développement",
+        location = "Salle 204",
+        capacity = 0 // Événement complet
+    ),
+    Event(
+        id = "3",
+        title = "Conférence Sécurité Android",
+        category = "Sécurité",
+        location = null, // Sans lieu précisé
+        capacity = 50
+    ),
+    Event(
+        id = "4",
+        title = "Hackathon Campus 2026",
+        category = "Innovation",
+        location = "Hall principal",
+        capacity = 100
+    ),
+    Event(
+        id = "5",
+        title = "Meetup Design System & Accessibilité",
+        category = "Design",
+        location = "Espace Coworking",
+        capacity = 15
+    )
+)
