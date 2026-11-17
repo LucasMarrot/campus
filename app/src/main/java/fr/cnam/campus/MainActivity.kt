@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -163,5 +162,24 @@ fun EventCard(
                 }
             }
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun EventCardFullPreview() {
+    CampusTheme {
+        EventCard(
+            event = Event(
+                id = "preview_full",
+                title = "Découverte de Jetpack Compose",
+                category = "Développement",
+                location = "Salle 204",
+                capacity = 0 // Événement complet
+            ),
+            onBook = {},
+            onClick = {},
+            modifier = Modifier.padding(16.dp)
+        )
     }
 }
