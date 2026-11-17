@@ -20,6 +20,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import fr.cnam.campus.ui.theme.CampusTheme
 import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.TopAppBar
+import androidx.compose.foundation.layout.PaddingValues
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,12 +58,26 @@ fun GreetingPreview() {
 }
 
 @Composable
-fun EventHeader(title: String, category: String, location: String?){
-    Column {
-        Text(title)
-        Text(category)
+fun EventHeader(
+    title: String,
+    category: String,
+    location: String?,
+    modifier: Modifier = Modifier
+) {
+    Column(modifier = modifier) {
         Text(
-            text = location?.takeIf { it.isNotBlank() }?.let { "$it!" } ?: "Lieu à confirmer"
+            text = category.uppercase(),
+            style = MaterialTheme.typography.labelMedium,
+            color = MaterialTheme.colorScheme.primary
+        )
+        Text(
+            text = title,
+            style = MaterialTheme.typography.titleLarge
+        )
+        Text(
+            text = location?.takeIf { it.isNotBlank() } ?: "Lieu à confirmer",
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
     }
 }
@@ -181,5 +201,40 @@ fun EventCardFullPreview() {
             onClick = {},
             modifier = Modifier.padding(16.dp)
         )
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun EventListScreen(
+    events: List<Event>,
+    onEventClick: (Event) -> Unit,
+    onBookClick: (Event) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Campus") }
+            )
+        },
+        modifier = modifier
+    ) { innerPadding ->
+        LazyColumn(
+            modifier = Modifier.padding(innerPadding),
+            contentPadding = PaddingValues(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            items(
+                items = events,
+                key = { event -> event.id }
+            ) { event ->
+                EventCard(
+                    event = event,
+                    onClick = { onEventClick(event) },
+                    onBook = { onBookClick(event) }
+                )
+            }
+        }
     }
 }
