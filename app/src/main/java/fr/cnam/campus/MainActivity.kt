@@ -27,6 +27,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TopAppBar
 import androidx.compose.foundation.layout.PaddingValues
 import android.util.Log
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.material3.FilterChip
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -165,6 +167,8 @@ val sampleEvents = listOf(
     )
 )
 
+val sampleCategories = listOf("Tous", "Développement", "Sécurité", "Innovation", "Design")
+
 @Composable
 fun EventCard(
     event: Event,
@@ -245,6 +249,22 @@ fun EventListScreen(
             contentPadding = PaddingValues(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
+            // 1. En-tête horizontal des catégories
+            item {
+                LazyRow(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    items(sampleCategories) { category ->
+                        FilterChip(
+                            selected = (category == "Tous"), // Sélectionné par défaut pour l'exemple
+                            onClick = { /* Filtrage à venir */ },
+                            label = { Text(category) }
+                        )
+                    }
+                }
+            }
+
+            // 2. Liste des cartes d'événements
             items(
                 items = events,
                 key = { event -> event.id }
@@ -255,6 +275,7 @@ fun EventListScreen(
                     onBook = { onBookClick(event) }
                 )
             }
+
         }
     }
 }
