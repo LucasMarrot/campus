@@ -35,6 +35,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.foundation.layout.height
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.pluralStringResource
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -103,7 +105,7 @@ fun EventHeader(
             style = MaterialTheme.typography.titleLarge
         )
         Text(
-            text = location?.takeIf { it.isNotBlank() } ?: "Lieu à confirmer",
+            text = location?.takeIf { it.isNotBlank() } ?: stringResource(R.string.location_to_confirm),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
@@ -203,7 +205,15 @@ fun EventCard(
             )
 
             Text(
-                text = if (event.capacity > 0) "${event.capacity} places disponibles" else "Complet"
+                text = if (event.capacity > 0) {
+                    pluralStringResource(
+                        id = R.plurals.available_places,
+                        count = event.capacity,
+                        event.capacity
+                    )
+                } else {
+                    stringResource(R.string.status_full)
+                }
             )
 
             Row(
@@ -214,7 +224,7 @@ fun EventCard(
                     onClick = onBook,
                     enabled = event.capacity > 0
                 ) {
-                    Text("Réserver")
+                    Text(stringResource(R.string.btn_book))
                 }
             }
         }
@@ -251,7 +261,7 @@ fun EventListScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Campus") }
+                title = { Text(stringResource(R.string.app_name)) }
             )
         },
         modifier = modifier
@@ -261,14 +271,14 @@ fun EventListScreen(
             contentPadding = PaddingValues(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            // 1. En-tête horizontal des catégories
+
             item {
                 LazyRow(
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     items(sampleCategories) { category ->
                         FilterChip(
-                            selected = (category == "Tous"), // Sélectionné par défaut pour l'exemple
+                            selected = (category == "Tous"),
                             onClick = { /* Filtrage à venir */ },
                             label = { Text(category) }
                         )
@@ -276,7 +286,6 @@ fun EventListScreen(
                 }
             }
 
-            // 2. Liste des cartes d'événements
             items(
                 items = events,
                 key = { event -> event.id }
@@ -307,7 +316,13 @@ fun EventDetailScreen(
                     .fillMaxWidth()
                     .padding(16.dp)
             ) {
-                Text(if (event.capacity > 0) "Réserver" else "Complet")
+                Text(
+                    if (event.capacity > 0) {
+                        stringResource(R.string.btn_book)
+                    } else {
+                        stringResource(R.string.status_full)
+                    }
+                )
             }
         },
         modifier = modifier
@@ -320,7 +335,7 @@ fun EventDetailScreen(
         ) {
             Image(
                 painter = painterResource(id = R.drawable.ic_launcher_background),
-                contentDescription = "Illustration de l'événement",
+                contentDescription = stringResource(R.string.cd_event_image),
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(200.dp),
@@ -338,7 +353,7 @@ fun EventDetailScreen(
                 )
 
                 Text(
-                    text = "Description",
+                    text = stringResource(R.string.section_description),
                     style = MaterialTheme.typography.titleMedium
                 )
 

@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">Campus</string>
+    <string name="location_to_confirm">Lieu à confirmer</string>
+    <string name="btn_book">Réserver</string>
+    <string name="status_full">Complet</string>
+    <string name="section_description">Description</string>
+    <string name="cd_event_image">Illustration de l\'événement</string>
+
+    <plurals name="available_places">
+        <item quantity="one">%d place disponible</item>
+        <item quantity="other">%d places disponibles</item>
+    </plurals>
 </resources>
