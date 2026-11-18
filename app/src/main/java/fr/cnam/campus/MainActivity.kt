@@ -37,6 +37,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.foundation.layout.height
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.pluralStringResource
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,7 +60,8 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Preview(showBackground = true)
+@Preview(name = "Liste - Mode Clair", showBackground = true)
+@Preview(name = "Liste - Mode Sombre", showBackground = true, uiMode = UI_MODE_NIGHT_YES)
 @Composable
 fun EventListScreenPreview() {
     CampusTheme {
@@ -185,10 +187,10 @@ val sampleCategories = listOf("Tous", "Développement", "Sécurité", "Innovatio
 
 @Composable
 fun EventCard(
+    modifier: Modifier = Modifier,
     event: Event,
     onBook: () -> Unit,
-    onClick: () -> Unit = {},
-    modifier: Modifier = Modifier
+    onClick: () -> Unit = {}
 ) {
     Card(
         onClick = onClick,
@@ -303,9 +305,9 @@ fun EventListScreen(
 
 @Composable
 fun EventDetailScreen(
+    modifier: Modifier = Modifier,
     event: Event,
-    onBookClick: () -> Unit = {},
-    modifier: Modifier = Modifier
+    onBookClick: () -> Unit = {}
 ) {
     Scaffold(
         bottomBar = {
@@ -363,5 +365,17 @@ fun EventDetailScreen(
                 )
             }
         }
+    }
+}
+
+@Preview(name = "Détail - Mode Clair", showBackground = true)
+@Preview(name = "Détail - Mode Sombre", showBackground = true, uiMode = UI_MODE_NIGHT_YES)
+@Composable
+fun EventDetailScreenPreview() {
+    CampusTheme {
+        EventDetailScreen(
+            event = sampleEvents.first(),
+            onBookClick = {}
+        )
     }
 }
