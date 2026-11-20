@@ -62,6 +62,7 @@ class MainActivity : ComponentActivity() {
 
 @Preview(name = "Liste - Mode Clair", showBackground = true)
 @Preview(name = "Liste - Mode Sombre", showBackground = true, uiMode = UI_MODE_NIGHT_YES)
+@Preview(name = "Liste - Police 200%", showBackground = true, fontScale = 2f)
 @Composable
 fun EventListScreenPreview() {
     CampusTheme {
@@ -370,6 +371,7 @@ fun EventDetailScreen(
 
 @Preview(name = "Détail - Mode Clair", showBackground = true)
 @Preview(name = "Détail - Mode Sombre", showBackground = true, uiMode = UI_MODE_NIGHT_YES)
+@Preview(name = "Détail - Police 200%", showBackground = true, fontScale = 2f)
 @Composable
 fun EventDetailScreenPreview() {
     CampusTheme {
